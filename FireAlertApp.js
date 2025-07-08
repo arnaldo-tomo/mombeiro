@@ -535,15 +535,15 @@ const FireAlertApp = () => {
     formData.append('location', alertData.location.address);
     formData.append('latitude', alertData.location.latitude.toString());
     formData.append('longitude', alertData.location.longitude.toString());
-
+  
     if (alertData.photo) {
       formData.append('photo', {
-        uri: alertData.photo.uri,
+        uri: Platform.OS === 'ios' ? alertData.photo.uri.replace('file://', '') : alertData.photo.uri,
         type: 'image/jpeg',
         name: 'alert_photo.jpg',
       });
     }
-
+  
     if (alertData.video) {
       formData.append('video', {
         uri: alertData.video.uri,
@@ -551,7 +551,7 @@ const FireAlertApp = () => {
         name: 'alert_video.mp4',
       });
     }
-
+  
     if (alertData.audio) {
       formData.append('audio', {
         uri: alertData.audio.uri,
@@ -559,20 +559,39 @@ const FireAlertApp = () => {
         name: 'alert_audio.m4a',
       });
     }
-
-    const response = await fetch(`${API_BASE_URL}/alerts`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-      body: formData,
-    });
-
-    if (!response.ok) {
-      throw new Error('Falha ao enviar alerta');
+  
+    try {
+      const response = await fetch(`${API_BASE_URL}/alerts`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        body: formData,
+      });
+  
+      // Log para depuração
+      const responseBody = await response.text();
+      console.log('Código de Status HTTP:', response.status);
+      console.log('Resposta do Servidor:', responseBody);
+  
+      // Verificar se a resposta é válida
+      if (!response.ok && response.status !== 200 && response.status !== 201) {
+        throw new Error(`Falha ao enviar alerta: Código ${response.status} - ${responseBody}`);
+      }
+  
+      // Tentar parsear a resposta como JSON
+      let jsonResponse;
+      try {
+        jsonResponse = JSON.parse(responseBody);
+      } catch (error) {
+        throw new Error(`Erro ao processar resposta do servidor: ${responseBody}`);
+      }
+  
+      return jsonResponse;
+    } catch (error) {
+      console.error('Erro em sendAlertToServer:', error.message);
+      throw error;
     }
-
-    return await response.json();
   };
 
   const sendAlert = async () => {
@@ -888,7 +907,7 @@ const FireAlertApp = () => {
           <Ionicons name="warning" size={32} color="#FFFFFF" />
         </Animated.View>
         <Text style={styles.panicButtonText}>PÂNICO</Text>
-</TouchableOpacity>
+         </TouchableOpacity>
       
       {/* Quick Call */}
       <TouchableOpacity
@@ -2093,5 +2112,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
 });
+
 
 export default FireAlertApp;
