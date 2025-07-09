@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "mombeiro",
+    "name": "S.O.S",
     "slug": "mombeiro",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -20,10 +20,16 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.arnaldotomo.mombeiro"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f60088e0-6640-4c2b-8e21-b5bd8750f42c"
+      }
     }
   }
 }
