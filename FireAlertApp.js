@@ -35,7 +35,7 @@ import { useColorScheme } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
-const API_BASE_URL = 'http://192.168.100.6:8000/api';
+const API_BASE_URL = 'https://bombeiro.visionmoz.online/api';
 
 const FireAlertApp = () => {
   const colorScheme = useColorScheme();
@@ -960,10 +960,10 @@ const FireAlertApp = () => {
                 <Animated.View style={[styles.logoCircle, { transform: [{ scale: pulseAnim }] }]}>
                   <Ionicons name="flame" size={32} color="#FFFFFF" />
                 </Animated.View>
-                <Text style={styles.logoText}>Fire Alert</Text>
+                <Text style={styles.logoText}>SOS Bombeiros</Text>
               </View>
               <Text style={styles.subtitle}>Sistema de Alerta de Incêndios</Text>
-              <Text style={styles.version}>v2.0.0 Premium</Text>
+              {/* <Text style={styles.version}>v2.0.0 Premium</Text> */}
             </View>
 
             <View style={styles.card}>
@@ -1379,7 +1379,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 10,
+    // marginBottom: 10,
   },
   logoCircle: {
     width: 80,
